@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -20,6 +21,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "coffees")
 @Data
+@Builder
 public class Coffee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,7 +34,7 @@ public class Coffee {
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp
-    private LocalDateTime updatesAt;
+    private LocalDateTime updatedAt;
 
     @PrePersist
     private void prePersist() {
