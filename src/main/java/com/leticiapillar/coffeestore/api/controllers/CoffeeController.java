@@ -45,7 +45,7 @@ public class CoffeeController {
                 .path("/{id}")
                 .buildAndExpand(createdCoffee.id())
                 .toUri();
-        return ResponseEntity.created(location).body(createdCoffee);
+        return ResponseEntity.created(location).build();
     }
 
     @PutMapping("/{id}")
