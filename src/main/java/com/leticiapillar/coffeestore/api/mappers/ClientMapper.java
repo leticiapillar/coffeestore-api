@@ -12,6 +12,6 @@ import java.util.List;
 public interface ClientMapper {
     ClientDTO toDTO(Client client);
     Client toModel(ClientCrudDTO dto);
-    List< ClientDTO> toDTOList(List<Client> clients);
+    List<ClientDTO> toDTOList(List<Client> clients);
     void updateEntityFromDto(ClientCrudDTO dto, @MappingTarget Client client);
 }

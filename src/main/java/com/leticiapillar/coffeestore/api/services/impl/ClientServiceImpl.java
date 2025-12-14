@@ -1,9 +1,14 @@
 package com.leticiapillar.coffeestore.api.services.impl;
 
+import com.leticiapillar.coffeestore.api.dtos.AddressCrudDTO;
+import com.leticiapillar.coffeestore.api.dtos.AddressDTO;
 import com.leticiapillar.coffeestore.api.dtos.ClientCrudDTO;
 import com.leticiapillar.coffeestore.api.dtos.ClientDTO;
+import com.leticiapillar.coffeestore.api.mappers.AddressMapper;
 import com.leticiapillar.coffeestore.api.mappers.ClientMapper;
+import com.leticiapillar.coffeestore.api.models.Address;
 import com.leticiapillar.coffeestore.api.models.Client;
+import com.leticiapillar.coffeestore.api.repositories.AddressRepository;
 import com.leticiapillar.coffeestore.api.repositories.ClientRepository;
 import com.leticiapillar.coffeestore.api.services.ClientService;
 import lombok.AllArgsConstructor;
@@ -18,7 +23,9 @@ import java.util.UUID;
 public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
+    private final AddressRepository addressRepository;
     private final ClientMapper clientMapper;
+    private final AddressMapper addressMapper;
 
     @Override
     public List<ClientDTO> findAll() {
@@ -62,6 +69,21 @@ public class ClientServiceImpl implements ClientService {
                 .ifPresent(client -> {
                     client.setEnabled(false);
                     clientRepository.save(client);
+                });
+    }
+
+    @Override
+    public List<AddressDTO> findByIdAddresses(UUID id) {
+        return addressMapper.toDTOList(addressRepository.findByClientId(id));
+    }
+
+    @Override
+    public void addAddress(UUID id, AddressCrudDTO dto) {
+        clientRepository.findById(id)
+                .ifPresent(client -> {
+                    Address address = addressMapper.toModel(dto);
+                    address.setClient(client);
+                    addressRepository.save(address);
                 });
     }
 

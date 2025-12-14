@@ -1,5 +1,7 @@
 package com.leticiapillar.coffeestore.api.controllers;
 
+import com.leticiapillar.coffeestore.api.dtos.AddressCrudDTO;
+import com.leticiapillar.coffeestore.api.dtos.AddressDTO;
 import com.leticiapillar.coffeestore.api.dtos.ClientCrudDTO;
 import com.leticiapillar.coffeestore.api.dtos.ClientDTO;
 import com.leticiapillar.coffeestore.api.services.ClientService;
@@ -39,7 +41,7 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<ClientDTO> create(@RequestBody ClientCrudDTO dto) {
+    public ResponseEntity<Void> create(@RequestBody ClientCrudDTO dto) {
         ClientDTO createdClient = clientService.create(dto);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -67,5 +69,19 @@ public class ClientController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{id}/addresses")
+    public ResponseEntity<List<AddressDTO>> findAddresses(@PathVariable UUID id) {
+        return ResponseEntity.ok(clientService.findByIdAddresses(id));
+    }
+
+    @PostMapping("/{id}/addresses")
+    public ResponseEntity<Object> addAddress(@PathVariable UUID id, @RequestBody AddressCrudDTO dto) {
+        return clientService.findById(id)
+                .map(clientDTO -> {
+                    clientService.addAddress(id, dto);
+                    return ResponseEntity.noContent().build();
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
 
 }

@@ -1,5 +1,7 @@
 package com.leticiapillar.coffeestore.api.services;
 
+import com.leticiapillar.coffeestore.api.dtos.AddressCrudDTO;
+import com.leticiapillar.coffeestore.api.dtos.AddressDTO;
 import com.leticiapillar.coffeestore.api.dtos.ClientCrudDTO;
 import com.leticiapillar.coffeestore.api.dtos.ClientDTO;
 
@@ -14,4 +16,6 @@ public interface ClientService {
     Optional<ClientDTO> update(UUID id, ClientCrudDTO dto);
     void activate(UUID id);
     void inactivate(UUID id);
+    List<AddressDTO> findByIdAddresses(UUID id);
+    void addAddress(UUID id, AddressCrudDTO dto);
 }
